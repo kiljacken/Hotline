@@ -1,111 +1,79 @@
 package dk.itu.bsdb.hotline.model;
-
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Model-klasse over Hotline systemet.
- * 
- * @author Morten Esbensen
- *
- */
 public class Model {
-	
-	// Singleton instance
-	private Model instance;
-	
-	// Lister over objekter
-	private List<Medarbejder> medarbejdere;
-	private List<Hotlinemedarbejder> hotlineMedarbejder;
-	private List<Sag> sager;
-	private List<Årsag> årsager;
-	
-	/**
-	 * Singleton access
-	 * @return Hotline model
-	 */
-	public Model getModel() {
-		if(instance == null) {
-			initModel();
-		}	
-		return instance;
-	}
-	
-	private Model() {
-		medarbejdere = new ArrayList<Medarbejder>();
-		hotlineMedarbejder = new ArrayList<Hotlinemedarbejder>();
-		sager = new ArrayList<Sag>();
-		årsager = new ArrayList<Årsag>();
-		
-		// Medarbejdere
-		Medarbejder m1 = new Medarbejder();
-		m1.setNavn("Nete Hansen");
-		m1.setEmail("nete@itu.dk");
-		
-		Medarbejder m2 = new Medarbejder();
-		m2.setNavn("knt");
-		m2.setEmail("knt@itu.dk");
-		
-		Medarbejder m3 = new Medarbejder();
-		m3.setNavn("esben");
-		m3.setEmail("esben@itu.dk");
-		
-		Medarbejder m4 = new Medarbejder();
-		
-		
-		medarbejdere.add(m1);
-		medarbejdere.add(m2);
-		medarbejdere.add(m3);
-		
-		// Hotlinemedarb.
-		Hotlinemedarbejder hm1 = new Hotlinemedarbejder();
-		hm1.setMedarbejder(m2);
-		
-		Hotlinemedarbejder hm2 = new Hotlinemedarbejder();
-		hm2.setMedarbejder(m3);
-		
-		hotlineMedarbejder.add(hm1);
-		hotlineMedarbejder.add(hm2);
-		
-		// Årsager
-		Årsag å1 = new Årsag();
-		å1.setNavn("Printer");
-		
-		Årsag å2 = new Årsag();
-		å2.setNavn("Login");
-		
-		Årsag å3 = new Årsag();
-		å3.setNavn("Almindelig");
-		å3.setTilhører(å1);
-		
-		Årsag å4 = new Årsag();
-		å4.setNavn("Farve");
-		å4.setTilhører(å1);
-		
-		Årsag å5 = new Årsag();
-		å5.setNavn("Inkjet");
-		å5.setTilhører(å1);
-		
-		å1.addIndeholder(å3);
-		å1.addIndeholder(å4);
-		å1.addIndeholder(å5);
-		
-		årsager.add(å1);
-		årsager.add(å2);
-		årsager.add(å3);
-		årsager.add(å4);
-		årsager.add(å5);
-		
-		// Sager
-				
-	}
-	
-	/**
-	 * Initialiserer en model med data
-	 */
-	private void initModel() {
-		instance = new Model();
-		
-		// Test model
-	}
+
+    public ArrayList<Cause> causes = new ArrayList<>();
+    public ArrayList<Ticket> tickets = new ArrayList<>();
+    public ArrayList<Employee> employees = new ArrayList<>();
+    public ArrayList<HotlineEmployee> hotline = new ArrayList<>();
+    
+    private static Model instance;
+    public static Model getInstance(){
+        return instance == null ? instance = new Model() : instance;
+    }
+
+    public void fillWithDummyData(){
+        //Adding employees
+        Employee e1 = new Employee();
+        e1.name = "Nete Hansen";
+        e1.email = "nete@itu.dk";
+
+        Employee e2 = new Employee();
+        e2.name = "knt";
+        e2.email = "knt@itu.dk";
+
+        Employee e3 = new Employee();
+        e3.name = "Esben";
+        e3.email = "ebsen@itu.dk";
+        
+        employees.add(e1);
+        employees.add(e2);
+        employees.add(e3);
+
+        //Adding hotline employees
+        HotlineEmployee h1 = new HotlineEmployee();
+        h1.employee = e1;
+        h1.level = 1;
+        h1.present = true;
+
+        HotlineEmployee h2 = new HotlineEmployee();
+        h2.employee = e2;
+        h2.level = 2;
+        h2.present = true;
+
+        hotline.add(h1);
+        hotline.add(h2);
+       
+       //Adding causes 
+       Cause c1 = new Cause();
+       c1.name = "Printer";
+
+       Cause c2 = new Cause();
+       c2.name = "Login";
+
+       Cause c3 = new Cause();
+       c3.name = "Color";
+       c3.belongsTo = c1;
+
+       Cause c4 = new Cause();
+       c4.name = "Inkjet";
+       c4.belongsTo = c1;
+
+       causes.add(c1);
+       causes.add(c2);
+       causes.add(c3);
+       causes.add(c4);
+
+       //Adding tickets
+       Ticket t1 = new Ticket();
+       t1.subject = "Printers not working";
+       t1.text = "It complains about not enough color ink";
+       t1.owner = h1;
+       t1.recipient = h1;
+       t1.sender = e3;
+       t1.cause = c3;
+
+       tickets.add(t1);
+    }
 }

@@ -4,4 +4,9 @@ public class Cause {
     public final int id = ++auto_id;
     public String name, description;
     public Cause belongsTo;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

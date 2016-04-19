@@ -5,5 +5,10 @@ public class HotlineEmployee {
     public int level;
     public boolean present;
     public Employee employee;
+
+    @Override
+    public String toString() {
+        return employee.toString();
+    }
 }
 
